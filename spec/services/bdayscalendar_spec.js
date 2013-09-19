@@ -53,6 +53,9 @@ describe("service: bdays calendar", function() {
 			var expectedResult = [{highlight: true, month: "prev", day: 29 },{highlight: true, month: "prev",	day: 30},{highlight: true, month: "prev", day: 31},{highlight: true,month: "current",	day: 1},{ highlight: true, month: "current", day: 2},{ highlight: true,	month: "current",	day: 3},{	highlight: true, month: "current", day: 26},{	highlight: true, month: "current", day: 27},{highlight: true,	month: "current",	day: 28},{highlight: true,month: "current",	day: 29},{highlight: true,month: "current",	day: 30},{highlight: true,month: "next",day: 1}];
 
 			expect(generatedCalendar.length).toBe(42);
+			var generatedHightlight = _.filter(generatedCalendar, function(item) { return item.highlight; }).length;
+			expect(generatedHightlight).toBe(expectedResult.length);
+			expect(generatedHightlight).toBe(12);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 
@@ -67,6 +70,9 @@ describe("service: bdays calendar", function() {
 			var expectedResult = [{highlight: true, month: "prev", day: 31 },{highlight: true, month: "current",	day: 1},{highlight: true, month: "current", day: 2},{highlight: true,month: "current",	day: 3},{ highlight: true, month: "current", day: 4},{ highlight: true,	month: "current",	day: 5},{	highlight: true, month: "current", day: 28},{	highlight: true, month: "current", day: 29},{highlight: true,	month: "next",	day: 1},{highlight: true,month: "next",	day: 2},{highlight: true,month: "next",	day: 3},{highlight: true,month: "next",day: 4}];
 			
 			expect(generatedCalendar.length).toBe(42);
+			var generatedHightlight = _.filter(generatedCalendar, function(item) { return item.highlight; }).length;
+			expect(generatedHightlight).toBe(expectedResult.length);
+			expect(generatedHightlight).toBe(12);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 
@@ -81,6 +87,9 @@ describe("service: bdays calendar", function() {
 			var expectedResult = [{highlight: true, month: "current", day: 19 },{highlight: true, month: "current",	day: 20},{highlight: true, month: "current", day: 21},{highlight: true,month: "current",	day: 22},{ highlight: true, month: "current", day: 23},{ highlight: true,	month: "current",	day: 24}];
 			
 			expect(generatedCalendar.length).toBe(42);
+			var generatedHightlight = _.filter(generatedCalendar, function(item) { return item.highlight; }).length;
+			expect(generatedHightlight).toBe(expectedResult.length);
+			expect(generatedHightlight).toBe(6);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 
@@ -95,6 +104,9 @@ describe("service: bdays calendar", function() {
 			var expectedResult = [{highlight: true, month: "current", day: 6 },{highlight: true, month: "current",	day: 7},{highlight: true, month: "current", day: 8},{highlight: true,month: "current",	day: 9},{ highlight: true, month: "current", day: 10},{ highlight: true,	month: "current",	day: 11},{	highlight: true, month: "next", day: 4},{	highlight: true, month: "next", day: 5},{highlight: true,	month: "next",	day: 6},{highlight: true,month: "next",	day: 7}];
 
 			expect(generatedCalendar.length).toBe(42);
+			var generatedHightlight = _.filter(generatedCalendar, function(item) { return item.highlight; }).length;
+			expect(generatedHightlight).toBe(expectedResult.length);
+			expect(generatedHightlight).toBe(10);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 
@@ -109,6 +121,9 @@ describe("service: bdays calendar", function() {
 			var expectedResult = [{highlight: true, month: "current", day: 1 },{highlight: true, month: "current",	day: 21}];
 
 			expect(generatedCalendar.length).toBe(42);
+			var generatedHightlight = _.filter(generatedCalendar, function(item) { return item.highlight; }).length;
+			expect(generatedHightlight).toBe(expectedResult.length);
+			expect(generatedHightlight).toBe(2);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 
@@ -123,6 +138,9 @@ describe("service: bdays calendar", function() {
 			var expectedResult = [{highlight: true, month: "current", day: 1 }, {highlight: true, month: 'next', day: 2}];
 
 			expect(generatedCalendar.length).toBe(42);
+			var generatedHightlight = _.filter(generatedCalendar, function(item) { return item.highlight; }).length;
+			expect(generatedHightlight).toBe(expectedResult.length);
+			expect(generatedHightlight).toBe(2);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 
@@ -137,6 +155,9 @@ describe("service: bdays calendar", function() {
 			var expectedResult = [{highlight: true, month: "current", day: 1 },{highlight: true, month: "current",	day: 2},{highlight: true, month: "current", day: 3},{highlight: true,month: "current",	day: 4},{ highlight: true, month: "current", day: 5},{ highlight: true,	month: "current",	day: 6},{	highlight: true, month: "current", day: 7},{	highlight: true, month: "current", day: 8},{highlight: true,	month: "current",	day: 9}, {highlight: true, month: 'next', day: 2}, {highlight: true, month: 'next', day: 3}, {highlight: true, month: 'next', day: 4}, {highlight: true, month: 'next', day: 5}, {highlight: true, month: 'next', day: 6}];
 
 			expect(generatedCalendar.length).toBe(42);
+			var generatedHightlight = _.filter(generatedCalendar, function(item) { return item.highlight; }).length;
+			expect(generatedHightlight).toBe(expectedResult.length);
+			expect(generatedHightlight).toBe(14);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 
@@ -148,9 +169,12 @@ describe("service: bdays calendar", function() {
 			};
 			calendar.setOptions(date, 9, 20);
 			var generatedCalendar = calendar.getCalendar(2013, 9);
-			var expectedResult = [{highlight: true, month: "prev", day: 26 },{highlight: true, month: "prev",	day: 27},{highlight: true, month: "prev", day: 28},{highlight: true,month: "prev",	day: 29},{ highlight: true, month: "prev", day: 30},{ highlight: true,	month: "prev",	day: 31},{	highlight: true, month: "current", day: 1},{	highlight: true, month: "current", day: 2},{highlight: true,	month: "current",	day: 3}, {highlight: true, month: 'current', day: 15}, {highlight: true, month: 'current', day: 16}, {highlight: true, month: 'current', day: 17}, {highlight: true, month: 'current', day: 18}, {highlight: true, month: 'current', day: 19}, {highlight: true, month: 'current', day: 20}, {highlight: true, month: 'current', day: 21}, {highlight: true, month: 'current', day: 2}, {highlight: true, month: 'current', day: 23}, {highlight: true, month: 'next', day: 6}];
+			var expectedResult = [{highlight: true, month: "prev", day: 26 },{highlight: true, month: "prev",	day: 27},{highlight: true, month: "prev", day: 28},{highlight: true,month: "prev",	day: 29},{ highlight: true, month: "prev", day: 30},{ highlight: true,	month: "prev",	day: 31},{	highlight: true, month: "current", day: 1},{	highlight: true, month: "current", day: 2},{highlight: true,	month: "current",	day: 3}, {highlight: true, month: 'current', day: 15}, {highlight: true, month: 'current', day: 16}, {highlight: true, month: 'current', day: 17}, {highlight: true, month: 'current', day: 18}, {highlight: true, month: 'current', day: 19}, {highlight: true, month: 'current', day: 20}, {highlight: true, month: 'current', day: 21}, {highlight: true, month: 'current', day: 22}, {highlight: true, month: 'current', day: 23}, {highlight: true, month: 'next', day: 5}, {highlight: true, month: 'next', day: 6}];
 
 			expect(generatedCalendar.length).toBe(42);
+			var generatedHightlight = _.filter(generatedCalendar, function(item) { return item.highlight; }).length;
+			expect(generatedHightlight).toBe(expectedResult.length);
+			expect(generatedHightlight).toBe(20);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 
