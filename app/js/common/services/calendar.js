@@ -4,9 +4,7 @@ angular.module('services.calendar', [])
 			var days = [], numLastDays, numCurrentMonthDays, lastMonthLastDay,
 									lastMonthFirstDay, nextMonthLastDay;
 
-			month = --month; // moment is 0 based
-
-			date = moment([year, month, 1]);
+			date = moment([year, month - 1, 1]);
 			// We need to find out how many days we need to fill from the last month
 			switch(date.day()) {
 				case 0: // AKA Sunday, so we need 6 days from the last month

@@ -34,22 +34,24 @@ angular.module('services.bdayscalendar', ['services.calendar'])
 
 		calculatePeriod = function(date) {
 			var bdays = [];
+			var temporaryOptions = angular.copy(options);
+
 			if(!options) {
 				throw new Error("You need to set the options first");
 			}
 			while (true) {
 				// Check if we are on the date provided in the options, if not, we need to go there
-				if ((options.startDay.month() !== date.month()) || (options.startDay.year() !== date.year())) {
-					if (date > options.startDay) {
-						options.startDay.add('days', options.cycle);
+				if ((temporaryOptions.startDay.month() !== date.month()) || (temporaryOptions.startDay.year() !== date.year())) {
+					if (date > temporaryOptions.startDay) {
+						temporaryOptions.startDay.add('days', temporaryOptions.cycle);
 					} else {
-						options.startDay.subtract('days', options.cycle);
+						temporaryOptions.startDay.subtract('days', temporaryOptions.cycle);
 					}
 				}
 
 				// So we are on the month, but maybe we can get an early date
-				else if ((options.startDay.month() === date.month() || options.startDay.year() === date.year()) && (options.startDay.date() > options.cycle)) {
-					options.startDay.subtract('days', options.cycle);
+				else if ((temporaryOptions.startDay.month() === date.month() || temporaryOptions.startDay.year() === date.year()) && (temporaryOptions.startDay.date() > temporaryOptions.cycle)) {
+					temporaryOptions.startDay.subtract('days', temporaryOptions.cycle);
 				}
 				// All set, time to calculate the bdays
 				else {
@@ -58,9 +60,9 @@ angular.module('services.bdayscalendar', ['services.calendar'])
 				}
 			}
 			// So we are on the first day of the month that starts a cycle but... Maybe the last month days are on a cycle too?
-			var tempDate = moment(options.startDay).subtract('days', options.cycle);
+			var tempDate = moment(temporaryOptions.startDay).subtract('days', temporaryOptions.cycle);
 			// We add an entire cycle for the last month, even for those days we don't actually see (those are ignored later)
-			angular.forEach([_.range(0, options.last)], function() {
+			angular.forEach([_.range(0, temporaryOptions.last)], function() {
 				bdays.push({
 					highlight: true,
 					month: "prev",
@@ -70,9 +72,9 @@ angular.module('services.bdayscalendar', ['services.calendar'])
 			});
 
 			// We check if she had a cycle that span two different months 
-			if (options.startDay.date() > (options.cycle - options.last +1)) { // AKA she has menstruation in day 1 but is not the first day of the cycle
-				var bdaysThisMonth = options.startDay.date() - (options.cycle - options.last + 1); // Days from this month
-				var bdaysLastMonth = options.last - bdaysThisMonth; // Days from the last month
+			if (temporaryOptions.startDay.date() > (temporaryOptions.cycle - temporaryOptions.last +1)) { // AKA she has menstruation in day 1 but is not the first day of the cycle
+				var bdaysThisMonth = temporaryOptions.startDay.date() - (temporaryOptions.cycle - temporaryOptions.last + 1); // Days from this month
+				var bdaysLastMonth = temporaryOptions.last - bdaysThisMonth; // Days from the last month
 				var lastMonthDays = moment([date.year(), date.month() - 1, 1]).daysInMonth(); // We need to know what's the last day of the month
 
 				// Time to add the last month days
@@ -97,22 +99,22 @@ angular.module('services.bdayscalendar', ['services.calendar'])
 
 			// Now is time for the current month and the next month
 			var isNext = false; // We need to know if we moved to the next month
-			angular.forEach(_.range(0, options.last), function() {
+			angular.forEach(_.range(0, temporaryOptions.last), function() {
 				if (isNext) {
 					bdays.push({
 						highlight: true,
 						month: 'next',
-						day: options.startDay.date()
+						day: temporaryOptions.startDay.date()
 					});
 				} else {
 					bdays.push({
 						highlight: true,
 						month: 'current',
-						day: options.startDay.date()
+						day: temporaryOptions.startDay.date()
 					});
 				}
-				options.startDay.add('days', 1);
-				if (options.startDay.date() === 1) { // AKA we are on the next month
+				temporaryOptions.startDay.add('days', 1);
+				if (temporaryOptions.startDay.date() === 1) { // AKA we are on the next month
 					isNext = true;
 				}
 			});
@@ -120,35 +122,35 @@ angular.module('services.bdayscalendar', ['services.calendar'])
 			isNext = false;
 
 			// Is there more bloody days this month?
-			options.startDay.add('days', options.cycle - options.last);
-			if (options.startDay.month() === date.month()) { // Seems so
-				angular.forEach(_.range(0, options.last), function() {
+			temporaryOptions.startDay.add('days', temporaryOptions.cycle - temporaryOptions.last);
+			if (temporaryOptions.startDay.month() === date.month()) { // Seems so
+				angular.forEach(_.range(0, temporaryOptions.last), function() {
 					if (isNext) {
 						bdays.push({
 							highlight: true,
 							month: 'next',
-							day: options.startDay.date()
+							day: temporaryOptions.startDay.date()
 						});
 					} else {
 						bdays.push({
 							highlight: true,
 							month: 'current',
-							day: options.startDay.date()
+							day: temporaryOptions.startDay.date()
 						});
 					}
-					options.startDay.add('days', 1);
-					if (options.startDay.date() === 1) { // AKA we are on the next month
+					temporaryOptions.startDay.add('days', 1);
+					if (temporaryOptions.startDay.date() === 1) { // AKA we are on the next month
 						isNext = true;
 					}
 				});
 			} else { // Well, that month has no more bloody days, but... what about the next month?
-				angular.forEach(_.range(0, options.last), function() {
+				angular.forEach(_.range(0, temporaryOptions.last), function() {
 					bdays.push({
 						highlight: true,
 						month: 'next',
-						day: options.startDay.date()
+						day: temporaryOptions.startDay.date()
 					});
-					options.startDay.add('days', 1);
+					temporaryOptions.startDay.add('days', 1);
 				});
 			}
 			return bdays;
