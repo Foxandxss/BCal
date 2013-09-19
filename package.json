@@ -1,11 +1,10 @@
 {
-  "name": "lineman-angular-template",
-  "title": "An HTML/JS/CSS app using Angular.JS",
+  "name": "BCal",
+  "title": "Menstruation calendar written in Angular.js",
   "version": "0.0.1",
   "private": true,
   "author": {
-    "name": "David Mosher",
-    "company": "DAVEMO Consulting"
+    "name": "Jesus Rodriguez"
   },
   "dependencies": {
     "grunt-angular-templates": "0.3.8",
