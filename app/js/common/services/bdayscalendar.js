@@ -3,13 +3,19 @@ angular.module('services.bdayscalendar', ['services.calendar'])
 		var options;
 
 		this.setOptions = function(startDay, last, cycle) {
+			if(!startDay.year || !startDay.month || !startDay.day) {
+				throw new Error("The 'date' is missing some data");
+			}
+
 			if ((last < 1 || last > 9) || (cycle < 20 || cycle > 31))
 			{
 				throw new Error("The 'last' or 'cycle' is out of range");
 			}
 
+			momentDate = moment([startDay.year, startDay.month - 1, startDay.day]); // 0 based
+
 			options = {
-				startDay: startDay,
+				startDay: momentDate,
 				last: last,
 				cycle: cycle
 			};
