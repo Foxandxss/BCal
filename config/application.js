@@ -39,9 +39,9 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('application
   ngtemplates: {
     app: { // "app" matches the name of the angular module defined in app.js
       options: {
-        base: "app/templates"
+        base: "app/js"
       },
-      src: "app/templates/**/*.html",
+      src: "app/js/**/*.tpl.html",
       // puts angular templates in a different spot than lineman looks for other templates in order not to conflict with the watch process
       dest: "generated/angular/template-cache.js"
     }
@@ -81,7 +81,7 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('application
   // watch target concat with concat_sourcemap
   watch: {
     ngtemplates: {
-      files: "app/templates/**/*.html",
+      files: "app/js/**/*.tpl.html",
       tasks: ["ngtemplates", "concat_sourcemap:js"]
     },
     js: {

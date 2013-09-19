@@ -1,0 +1,5 @@
+<div id="calendar">
+	<div ng-repeat="day in days" ng-class="{highlight: day.highlight}">
+		<span ng-class="{'outside-month-day': day.month !== 'current'}">{{day.day}}</span>
+	</div>
+</div>
