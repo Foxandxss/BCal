@@ -19,8 +19,12 @@ describe('directive: calendar', function() {
 	}));
 
 	describe('directive template', function() {
+		it('contains a div for each day of the week', function() {
+			var divs = element.find('#calendar > div.calendar-header');
+			expect(divs.length).toBe(7);
+		});
 		it('contains 42 divs, one for every day', function() {
-			var divs = element.find('#calendar > div');
+			var divs = element.find('#calendar > div.a-day');
 			expect(divs.length).toBe(42);
 		});
 

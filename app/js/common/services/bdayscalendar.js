@@ -7,9 +7,9 @@ angular.module('services.bdayscalendar', ['services.calendar'])
 				throw new Error("The 'date' is missing some data");
 			}
 
-			if ((last < 1 || last > 9) || (cycle < 20 || cycle > 31))
+			if (!last || !cycle || (last < 1 || last > 9) || (cycle < 20 || cycle > 31))
 			{
-				throw new Error("The 'last' or 'cycle' is out of range");
+				throw new Error("The 'last' or 'cycle' is out of range or missing");
 			}
 
 			momentDate = moment([startDay.year, startDay.month - 1, startDay.day]); // 0 based

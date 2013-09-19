@@ -5,6 +5,14 @@
     <link rel="stylesheet" type="text/css" href="css/app.css" media="all" />
   </head>
   <body>
+    <div id="wrapper">
+      <!-- temp -->
+      <ng-include src="'app/calendar/calendar.tpl.html'" ng-controller="CalendarCtrl"></ng-include>
+    </div>
+    <div id="feedback">
+      Feedback, follow me on github, etc etc
+    </div>
+
     <script type="text/javascript" src="js/app.js"></script>
   </body>
 </html>

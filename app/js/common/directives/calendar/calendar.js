@@ -6,5 +6,5 @@ angular.module('directives.calendar', [])
 				days: '='
 			},
 			templateUrl: 'common/directives/calendar/calendar.tpl.html'
-		}
+		};
 	});

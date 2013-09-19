@@ -25,13 +25,15 @@ describe("service: bdays calendar", function() {
 			expect(options.cycle).toEqual(28);
 		});
 
-		it("throws if you put a 'last' out of range", function() {
-			expect(function() { calendar.setOptions({year: 2013, month: 9, day: 29}, 0,  28) }).toThrow(new Error("The 'last' or 'cycle' is out of range"));
-			expect(function() { calendar.setOptions({year: 2013, month: 9, day: 29}, 10, 28) }).toThrow(new Error("The 'last' or 'cycle' is out of range"));
+		it("throws if you put a 'last' out of range or missing", function() {
+			expect(function() { calendar.setOptions({year: 2013, month: 9, day: 29}, 0,  28) }).toThrow(new Error("The 'last' or 'cycle' is out of range or missing"));
+			expect(function() { calendar.setOptions({year: 2013, month: 9, day: 29}, 10, 28) }).toThrow(new Error("The 'last' or 'cycle' is out of range or missing"));
+			expect(function() { calendar.setOptions({year: 2013, month: 9, day: 29}) }).toThrow(new Error("The 'last' or 'cycle' is out of range or missing"));
 		});
-		it("throws if you put a 'cycle' out of range", function() {
-			expect(function() { calendar.setOptions({year: 2013, month: 9, day: 29}, 2, 32) }).toThrow(new Error("The 'last' or 'cycle' is out of range"));
-			expect(function() { calendar.setOptions({year: 2013, month: 9, day: 29}, 2, 19) }).toThrow(new Error("The 'last' or 'cycle' is out of range"));
+		it("throws if you put a 'cycle' out of range or missing", function() {
+			expect(function() { calendar.setOptions({year: 2013, month: 9, day: 29}, 2, 32) }).toThrow(new Error("The 'last' or 'cycle' is out of range or missing"));
+			expect(function() { calendar.setOptions({year: 2013, month: 9, day: 29}, 2, 19) }).toThrow(new Error("The 'last' or 'cycle' is out of range or missing"));
+			expect(function() { calendar.setOptions({year: 2013, month: 9, day: 29}) }).toThrow(new Error("The 'last' or 'cycle' is out of range or missing"));
 		});
 		it("throws if the date is missing some data", function() {
 			expect(function() { calendar.setOptions({}, 8, 29) }).toThrow(new Error("The 'date' is missing some data"));
