@@ -3,6 +3,7 @@
   <head>
     <title><%= pkg.name %></title>
     <link rel="stylesheet" type="text/css" href="css/app.css" media="all" />
+    <base href="/BCal"></base>
   </head>
   <body>
     <div id="wrapper">
