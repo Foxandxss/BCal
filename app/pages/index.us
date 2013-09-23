@@ -2,8 +2,8 @@
 <html ng-app="app">
   <head>
     <title><%= pkg.name %></title>
-    <link rel="stylesheet" type="text/css" href="css/app.css" media="all" />
-    <base href="/BCal"></base>
+    <link rel="stylesheet" type="text/css" href="/css/app.css" media="all" />
+    <base href="/" />
   </head>
   <body>
     <div id="wrapper">
@@ -13,6 +13,6 @@
       Feedback, follow me on github, etc etc
     </div>
 
-    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
   </body>
 </html>
