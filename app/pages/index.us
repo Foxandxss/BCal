@@ -6,8 +6,7 @@
   </head>
   <body>
     <div id="wrapper">
-      <!-- temp -->
-      <ng-include src="'app/calendar/calendar.tpl.html'" ng-controller="CalendarCtrl"></ng-include>
+      <ui-view></ui-view>
     </div>
     <div id="feedback">
       Feedback, follow me on github, etc etc
