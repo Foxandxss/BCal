@@ -12,8 +12,8 @@ angular.module('calendar', ['services.bdayscalendar', 'directives.calendar'])
 		});
 	})
 	.controller('CalendarCtrl', function($scope, $stateParams, $state, bdayscalendar) {
-		$scope.year = parseInt($stateParams.year) || new Date().getFullYear();
-		$scope.month = parseInt($stateParams.month) || new Date().getMonth() + 1; // Our service is not 0 based.
+		$scope.year = parseInt($stateParams.year, 10) || new Date().getFullYear();
+		$scope.month = parseInt($stateParams.month, 10) || new Date().getMonth() + 1; // Our service is not 0 based.
 
 		bdayscalendar.setOptions({year: $scope.year, month: $scope.month, day: 26}, 6, 28); // temporary hard coded
 		$scope.bdays = bdayscalendar.getCalendar($scope.year, $scope.month);
