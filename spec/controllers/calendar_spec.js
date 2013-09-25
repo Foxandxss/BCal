@@ -1,22 +1,26 @@
 describe('controller: calendar', function() {
-	var ctrl, scope, $stateParams, $state, bdayscalendar, $controller;
+	var ctrl, scope, $stateParams, $state, bdayscalendar, $controller, localStorageService;
 
 	beforeEach(module('ui.router'));
+	beforeEach(module('LocalStorageModule')); // We import this to prevent polluting the local storage
 	beforeEach(module('calendar'));
 
-	beforeEach(inject(function(_$controller_, _$rootScope_, _$state_, _bdayscalendar_) {
+	beforeEach(inject(function(_$controller_, _$rootScope_, _$state_, _bdayscalendar_, _localStorageService_) {
 		$controller = _$controller_;
 		$state = _$state_;
 		bdayscalendar = _bdayscalendar_;
 		scope = _$rootScope_.$new();
+		localStorageService = _localStorageService_;
 	}));
 
 	describe("default params", function() {
 		var year, month;
 		beforeEach(function() {
-			ctrl = $controller('CalendarCtrl', { $scope: scope, $state: $state, $stateParams: {}, bdayscalendar: bdayscalendar});
 			year = new Date().getFullYear();
-			month = new Date().getMonth() + 1;
+			month = new Date().getMonth() + 1;	
+			spyOn(localStorageService, 'add'); // Since we need data beforehand, we mock this to prevent the polluting of the local storage
+			bdayscalendar.setOptions({year: year, month: month, day: 26}, 6, 28); // Fake data
+			ctrl = $controller('CalendarCtrl', { $scope: scope, $state: $state, $stateParams: {}, bdayscalendar: bdayscalendar});					
 		});
 
 		it("should contain the actual year/month if there is no $stateParams", function() {
@@ -70,6 +74,8 @@ describe('controller: calendar', function() {
 
 	describe("with stateParams", function() {
 		beforeEach(function() {
+			spyOn(localStorageService, 'add'); // Since we need data beforehand, we mock this to prevent the polluting of the local storage
+			bdayscalendar.setOptions({year: 2014, month: 2, day: 26}, 6, 28); // Fake data
 			ctrl = $controller('CalendarCtrl', { $scope: scope, $state: $state, $stateParams: {year: "2014", month: "2"}, bdayscalendar: bdayscalendar});
 		});
 

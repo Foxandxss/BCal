@@ -1,10 +1,12 @@
 describe("service: bdays calendar", function() {
-	var calendar;
+	var calendar, localstorage;
 
+	beforeEach(module("LocalStorageModule"));
 	beforeEach(module("services.bdayscalendar"));
 
-	beforeEach(inject(function(_bdayscalendar_) {
+	beforeEach(inject(function(_bdayscalendar_, _localStorageService_) {
 		calendar = _bdayscalendar_;
+		localstorage = _localStorageService_;
 	}));
 
 	describe("#setOptions(startDay, last, cycle)", function() {
@@ -40,6 +42,35 @@ describe("service: bdays calendar", function() {
 			expect(function() { calendar.setOptions({year: 2013, month: 9}, 8, 29) }).toThrow(new Error("The 'date' is missing some data"));
 			expect(function() { calendar.setOptions({year: 2013, day: 29}, 8, 29) }).toThrow(new Error("The 'date' is missing some data"));
 			expect(function() { calendar.setOptions({month: 9, day: 29}, 8, 29) }).toThrow(new Error("The 'date' is missing some data"));
+		});
+		it("should save the options in the localstorage if available", function() {
+			if(localstorage.isSupported()) { // We avoid the test to fail if there is no local storage in the testing browser
+				spyOn(localstorage, 'add');
+				calendar.setOptions({year: 2013, month: 9, day: 29}, 6, 28);
+				expect(localstorage.add).toHaveBeenCalledWith('bdaysoptions', angular.toJson({date: {year: 2013, month: 9, day: 29}, last: 6, cycle: 28}));
+			};
+		});
+	});
+
+	describe("#getOptions", function() {
+		it("should return undefined if there is no options", function() {
+			spyOn(localstorage, 'get');
+			expect(calendar.getOptions()).toBe(undefined);
+			expect(localstorage.get).toHaveBeenCalledWith('bdaysoptions');
+		});
+
+		it("if options is null, it should call the localstorage and return the options", function() {
+			if(localstorage.isSupported()) {
+				spyOn(localstorage, 'get').andReturn(angular.toJson({date: {year: 2013, month: 9, day: 29}, last: 6, cycle: 28}));
+				var options = calendar.getOptions();
+				expect(localstorage.get).toHaveBeenCalledWith('bdaysoptions');
+				expect(options.startDay.year()).toEqual(2013);
+				expect(options.startDay.month()).toEqual(8); // 0 based
+				expect(options.startDay.date()).toEqual(29);
+
+				expect(options.last).toEqual(6);
+				expect(options.cycle).toEqual(28);
+			}
 		});
 	});
 

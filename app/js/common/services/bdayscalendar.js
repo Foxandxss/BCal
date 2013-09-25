@@ -1,5 +1,5 @@
-angular.module('services.bdayscalendar', ['services.calendar'])
-	.service('bdayscalendar', function(calendar) {
+angular.module('services.bdayscalendar', ['services.calendar', 'LocalStorageModule'])
+	.service('bdayscalendar', function(calendar, localStorageService) {
 		var options;
 
 		this.setOptions = function(startDay, last, cycle) {
@@ -12,17 +12,26 @@ angular.module('services.bdayscalendar', ['services.calendar'])
 				throw new Error("The 'last' or 'cycle' is out of range or missing");
 			}
 
-			momentDate = moment([startDay.year, startDay.month - 1, startDay.day]); // 0 based
+			// if we have local storage support, save the data
+			if(localStorageService.isSupported()) {
+				localStorageService.add('bdaysoptions', angular.toJson({date: startDay, last: last, cycle: cycle}));
+			}
 
-			options = {
-				startDay: momentDate,
-				last: last,
-				cycle: cycle
-			};
+			options = buildOptions(startDay, last, cycle);
 		};
 
 		this.getOptions = function() {
-			return options;
+			if (options) { // We already have the options
+				return options;
+			} else {
+				var storedOptions = angular.fromJson(localStorageService.get('bdaysoptions'));
+				if (storedOptions) { // We have saved options?
+					options = buildOptions(storedOptions.date, storedOptions.last, storedOptions.cycle);
+					return options;	
+				} else { // We don't
+					return undefined;
+				}				
+			}
 		};
 
 		this.getCalendar = function(year, month) {
@@ -32,10 +41,20 @@ angular.module('services.bdayscalendar', ['services.calendar'])
 			return decorateCalendar(genCalendar, bdays);
 		};
 
+		buildOptions = function(date, last, cycle) {
+			var momentDate = moment([date.year, date.month - 1, date.day]); // 0 based
+
+			return {
+				startDay: momentDate,
+				last: last,
+				cycle: cycle
+			};
+		}
+
 		calculatePeriod = function(date) {
 			var bdays = [];
 			var temporaryOptions = angular.copy(options);
-
+			// console.log(options);
 			if(!options) {
 				throw new Error("You need to set the options first");
 			}

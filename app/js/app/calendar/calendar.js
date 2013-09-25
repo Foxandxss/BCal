@@ -15,10 +15,9 @@ angular.module('calendar', ['services.bdayscalendar', 'directives.calendar'])
 		$scope.year = parseInt($stateParams.year, 10) || new Date().getFullYear();
 		$scope.month = parseInt($stateParams.month, 10) || new Date().getMonth() + 1; // Our service is not 0 based.
 
-		bdayscalendar.setOptions({year: $scope.year, month: $scope.month, day: 26}, 6, 28); // temporary hard coded
 		$scope.bdays = bdayscalendar.getCalendar($scope.year, $scope.month);
 
-		$scope.header = bdayscalendar.getOptions().startDay.format('MMMM, YYYY');
+		$scope.header = moment([$scope.year, $scope.month - 1, 1]).format('MMMM, YYYY'); // We use moment to get the header, it is 0 based
 		
 		$scope.lastMonth = function() {
 			if ($scope.month === 1) { // Go to the last year
