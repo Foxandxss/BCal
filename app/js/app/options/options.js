@@ -5,11 +5,11 @@ angular.module('options', ['ui.date', 'services.bdayscalendar', 'services.utils'
 			templateUrl: 'app/options/options.tpl.html',
 			controller: 'OptionsCtrl',
 			resolve: {
-				options: function(bdayscalendar) {
+				options: ['bdayscalendar', function(bdayscalendar) {
 					var options = bdayscalendar.getOptions();
 
 					return options ? options : {};
-				}
+				}]
 			}
 		});
 	})

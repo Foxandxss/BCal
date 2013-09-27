@@ -5,8 +5,6 @@ angular.module('app', ['ui.router', 'calendar', 'options'])
 	}).
 	run(function($rootScope, $state, bdayscalendar) {
 
-		// bdayscalendar.setOptions({year: 2013, month: 9, day: 25}, 6, 28);
-
 		$rootScope.$on('$stateChangeStart', function(event, next, current) {
 			var options = bdayscalendar.getOptions();
 			if (!options && next.url !== '/options') {
