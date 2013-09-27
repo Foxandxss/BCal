@@ -49,7 +49,7 @@ angular.module('services.bdayscalendar', ['services.calendar', 'LocalStorageModu
 				last: last,
 				cycle: cycle
 			};
-		}
+		};
 
 		calculatePeriod = function(date) {
 			var bdays = [];

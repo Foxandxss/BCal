@@ -1,0 +1,50 @@
+<h1 id="optionsHeader">Options</h1>
+
+<form id="optionsForm" name="optionsForm" novalidate>
+	<table>
+		<tr class="optionsRow">
+			<td><label for="startDay">When did your last period start?</label></td>
+			<td><input name="startDay" ui-date="{firstDay: 1}" ng-model="options.startDay" ng-required="true"></td>
+		</tr>
+		<tr class="optionsRow">
+			<td><label for="last">How long does your period last?</label></td>
+			<td><select name="last" ng-model="options.last" required>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+			</select></td>
+		</tr>
+		<tr class="optionsRow">
+			<td><label for="cycle">How many days is your menstrual cycle?</label></td>
+			<td><select name="cycle" ng-model="options.cycle" required>
+				<option value="20">20</option>
+				<option value="21">21</option>
+				<option value="22">22</option>
+				<option value="23">23</option>
+				<option value="24">24</option>
+				<option value="25">25</option>
+				<option value="26">26</option>
+				<option value="27">27</option>
+				<option value="28">28</option>
+				<option value="29">29</option>
+				<option value="30">30</option>
+				<option value="31">31</option>
+			</select></td>
+		</tr>
+		<tr class="optionsButtons">
+			<td></td>
+			<td>
+				<button ng-click="cancel()" ng-if="canCancel">Cancel</button>
+				<button ng-disabled="optionsForm.$invalid" ng-click="submitOptions()">Submit</button>
+			</td>
+		</tr>
+	</table>
+</form>
+
+<img id="optionsFlower" src="/img/flower.png" alt="flower" />

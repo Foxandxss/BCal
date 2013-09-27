@@ -38,4 +38,8 @@ angular.module('calendar', ['services.bdayscalendar', 'directives.calendar'])
 				$state.go('concreteDate', {year: $scope.year, month: month});
 			}
 		};
+
+		$scope.goOptions = function() {
+			$state.go('options');
+		};
 	});

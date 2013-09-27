@@ -3,6 +3,7 @@
   <head>
     <title><%= pkg.name %></title>
     <link rel="stylesheet" type="text/css" href="/css/app.css" media="all" />
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css' />
     <base href="/" />
   </head>
   <body>
@@ -10,7 +11,7 @@
       <ui-view></ui-view>
     </div>
     <div id="feedback">
-      Feedback, follow me on github, etc etc
+      Follow this project at <a href="https://github.com/Foxandxss/BCal">Github</a>
     </div>
 
     <script type="text/javascript" src="/js/app.js"></script>
