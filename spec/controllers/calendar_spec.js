@@ -2,13 +2,31 @@ describe('controller: calendar', function() {
 	var ctrl, scope, $stateParams, $state, bdayscalendar, $controller, localStorageService;
 
 	beforeEach(module('ui.router'));
-	beforeEach(module('LocalStorageModule')); // We import this to prevent polluting the local storage
-	beforeEach(module('calendar'));
+	beforeEach(module('LocalStorageModule', function($provide) {
+		var mockLocalStorageService = {
+			add: function() {},
+			isSupported: function() {}
+		}
+
+		spyOn(mockLocalStorageService, 'add');
+		spyOn(mockLocalStorageService, 'isSupported').andReturn(true);
+
+		$provide.value('localStorageService', mockLocalStorageService);
+	})); // We import this to prevent polluting the local storage
+	beforeEach(module('calendar', function($provide) {
+		var fakeState = { // I mock it here at this level to prevent a giant mock (if I do it on ui.router I will need to mock much more)
+			go: function() {}
+		}
+
+		spyOn(fakeState, 'go');
+
+		$provide.value('$state', fakeState);
+	}));
 
 	beforeEach(inject(function(_$controller_, _$rootScope_, _$state_, _bdayscalendar_, _localStorageService_) {
 		$controller = _$controller_;
 		$state = _$state_;
-		bdayscalendar = _bdayscalendar_;
+		bdayscalendar = _bdayscalendar_; // I am not able to mock bdayscalendar (bad) becase I need to have a generated calendar (PR welcome)
 		scope = _$rootScope_.$new();
 		localStorageService = _localStorageService_;
 	}));
@@ -17,8 +35,7 @@ describe('controller: calendar', function() {
 		var year, month;
 		beforeEach(function() {
 			year = new Date().getFullYear();
-			month = new Date().getMonth() + 1;	
-			spyOn(localStorageService, 'add'); // Since we need data beforehand, we mock this to prevent the polluting of the local storage
+			month = new Date().getMonth() + 1;				
 			bdayscalendar.setOptions({year: year, month: month, day: 26}, 6, 28); // Fake data
 			ctrl = $controller('CalendarCtrl', { $scope: scope, $state: $state, $stateParams: {}, bdayscalendar: bdayscalendar});					
 		});
@@ -41,7 +58,6 @@ describe('controller: calendar', function() {
 
 		it("should be able to go to the last month", function() {
 			var newYear, newMonth;
-			spyOn($state, 'go');
 			scope.lastMonth();
 
 			if (month === 1) {
@@ -57,7 +73,6 @@ describe('controller: calendar', function() {
 
 		it("should be able to go to the next month", function() {
 			var newYear, newMonth;
-			spyOn($state, 'go');
 			scope.nextMonth();
 
 			if (month === "12") {
@@ -74,7 +89,6 @@ describe('controller: calendar', function() {
 
 	describe("with stateParams", function() {
 		beforeEach(function() {
-			spyOn(localStorageService, 'add'); // Since we need data beforehand, we mock this to prevent the polluting of the local storage
 			bdayscalendar.setOptions({year: 2014, month: 2, day: 26}, 6, 28); // Fake data
 			ctrl = $controller('CalendarCtrl', { $scope: scope, $state: $state, $stateParams: {year: "2014", month: "2"}, bdayscalendar: bdayscalendar});
 		});
@@ -89,14 +103,12 @@ describe('controller: calendar', function() {
 		});
 
 		it("should be able to go to the last month", function() {
-			spyOn($state, 'go');
 			scope.lastMonth();
 
 			expect($state.go).toHaveBeenCalledWith('concreteDate', { year: 2014, month: 1});
 		});
 
 		it("should be able to go to the next month", function() {
-			spyOn($state, 'go');
 			scope.nextMonth();
 
 			expect($state.go).toHaveBeenCalledWith('concreteDate', { year: 2014, month: 3});
@@ -109,7 +121,6 @@ describe('controller: calendar', function() {
 
 		it("it should be able to move to the last year", function() {
 			ctrl = $controller('CalendarCtrl', { $scope: scope, $state: $state, $stateParams: {year: "2014", month: "1"}, bdayscalendar: bdayscalendar});
-			spyOn($state, 'go');
 			scope.lastMonth();
 
 			expect($state.go).toHaveBeenCalledWith('concreteDate', { year: 2013, month: 12});
@@ -117,7 +128,6 @@ describe('controller: calendar', function() {
 
 		it("it should be able to move to the next year", function() {
 			ctrl = $controller('CalendarCtrl', { $scope: scope, $state: $state, $stateParams: {year: "2013", month: "12"}, bdayscalendar: bdayscalendar});
-			spyOn($state, 'go');
 			scope.nextMonth();
 
 			expect($state.go).toHaveBeenCalledWith('concreteDate', { year: 2014, month: 1});

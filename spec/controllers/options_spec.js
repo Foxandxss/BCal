@@ -1,12 +1,37 @@
 describe('controller: options', function() {
-	var ctrl, options, scope, $controller;
+	var ctrl, options, scope, $controller, bdayscalendar, $state, utils;
 
 	beforeEach(module('ui.router'));
-	beforeEach(module('options'));
+	beforeEach(module('options', function($provide) {
 
-	beforeEach(inject(function(_$controller_, _$rootScope_) {
+		var fakeUtils = {
+			fromMomentToDate: function() {}
+		}
+
+		var fakeState = {
+			go: function() {}
+		}
+
+		var fakeBdays = {
+			setOptions: function(startDay, last, cycle) {}
+		}
+
+		spyOn(fakeUtils, 'fromMomentToDate').andReturn(new Date());
+		spyOn(fakeState, 'go');
+		spyOn(fakeBdays, 'setOptions');
+
+		$provide.value('utils', fakeUtils);
+		$provide.value('$state', fakeState);
+		$provide.value('bdayscalendar', fakeBdays);
+
+	}));
+
+	beforeEach(inject(function(_$controller_, _$rootScope_, _bdayscalendar_, _$state_, _utils_) {
 		$controller = _$controller_;
 		scope = _$rootScope_.$new();
+		$state = _$state_;
+		utils = _utils_;
+		bdayscalendar = _bdayscalendar_;
 		options = {};
 	}));
 
@@ -29,20 +54,8 @@ describe('controller: options', function() {
 	});
 
 	describe("with options", function() {
-		var fakeUtils;
-		var fakeState;
 		beforeEach(function() {
-			fakeUtils = {
-				fromMomentToDate: function() {}
-			};
-
-			fakeState = {
-				go: function() {}
-			};
-
-			spyOn(fakeUtils, 'fromMomentToDate').andReturn(new Date());
-			spyOn(fakeState, 'go');
-			ctrl = $controller('OptionsCtrl', {$scope: scope, $state: fakeState, utils: fakeUtils, options: {startDay: moment(), last: 6, cycle: 28}});			
+			ctrl = $controller('OptionsCtrl', {$scope: scope, $state: $state, utils: utils, options: {startDay: moment(), last: 6, cycle: 28}});			
 		});
 
 		it("contains the provided options", function() {
@@ -59,25 +72,13 @@ describe('controller: options', function() {
 
 		it("cancel should redirect to the calendar", function() {
 			scope.cancel();
-			expect(fakeState.go).toHaveBeenCalledWith('home');
+			expect($state.go).toHaveBeenCalledWith('home');
 		});
 	});
 
 	describe("submitting new options", function() {
-		var fakeBdays;
-		var fakeState;
 		beforeEach(function() {
-			fakeBdays = {
-				setOptions: function(startDay, last, cycle) {}
-			};
-
-			fakeState = {
-				go: function() {}
-			};
-
-			spyOn(fakeBdays, 'setOptions');
-			spyOn(fakeState, 'go');
-			ctrl = $controller('OptionsCtrl', {$scope: scope, $state: fakeState, utils: {}, options: {}, bdayscalendar: fakeBdays});
+			ctrl = $controller('OptionsCtrl', {$scope: scope, $state: $state, utils: utils, options: {}, bdayscalendar: bdayscalendar});
 		});
 
 		it("should call bdayscalendar with the right options and redirect", function() {
@@ -86,8 +87,8 @@ describe('controller: options', function() {
 			}
 
 			scope.submitOptions();
-			expect(fakeBdays.setOptions).toHaveBeenCalledWith({year: scope.options.startDay.getFullYear(), month: scope.options.startDay.getMonth() + 1, day: scope.options.startDay.getDate()}, scope.options.last, scope.options.cycle);
-			expect(fakeState.go).toHaveBeenCalledWith('home');
+			expect(bdayscalendar.setOptions).toHaveBeenCalledWith({year: scope.options.startDay.getFullYear(), month: scope.options.startDay.getMonth() + 1, day: scope.options.startDay.getDate()}, scope.options.last, scope.options.cycle);
+			expect($state.go).toHaveBeenCalledWith('home');
 		});
 	});
 });
