@@ -28,7 +28,7 @@ exports.config = {
   // sauceKey: null,
 
   // The address of a running selenium server.
-  // seleniumAddress: 'http://localhost:4444/wd/hub',
+  seleniumAddress: 'http://localhost:4444/wd/hub',
 
   // Spec patterns are relative to the current working directly when
   // protractor is called.
