@@ -38,7 +38,7 @@ angular.module('services.bdayscalendar', ['services.calendar', 'LocalStorageModu
 			var requestedDate = moment([year, month - 1, 1]);
 			var genCalendar = calendar.getCalendar(year, month);
 			var bdays = calculatePeriod(requestedDate);
-			return decorateCalendar(genCalendar, bdays);
+			return decorateCalendar(genCalendar, bdays, requestedDate);
 		};
 
 		buildOptions = function(date, last, cycle) {
@@ -175,7 +175,16 @@ angular.module('services.bdayscalendar', ['services.calendar', 'LocalStorageModu
 			return bdays;
 		};
 
-		decorateCalendar = function(genCalendar, bdays) {
+		decorateCalendar = function(genCalendar, bdays, requestedDate) {
+			result = {};
+
+			result['bdays'] = mergeBdays(genCalendar, bdays);
+			result['date'] = requestedDate;
+
+			return result;
+		};
+
+		mergeBdays = function(genCalendar, bdays) {
 			// Index original objects by unique key
 			index = {};
 			genCalendar.map(function (v) {

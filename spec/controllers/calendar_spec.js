@@ -53,7 +53,7 @@ describe('controller: calendar', function() {
 
 		it("contains the correct bdays", function() {
 			var bdays = bdayscalendar.getCalendar(year, month);
-			expect(calendarContainDates(scope.bdays, bdays)).toBe(true);
+			expect(calendarContainDates(scope.bdays, bdays.bdays)).toBe(true);
 		})
 
 		it("should be able to go to the last month", function() {
@@ -116,7 +116,7 @@ describe('controller: calendar', function() {
 
 		it("contains the correct bdays", function() {
 			var bdays = bdayscalendar.getCalendar(2014, 2);
-			expect(calendarContainDates(scope.bdays, bdays)).toBe(true);
+			expect(calendarContainDates(scope.bdays, bdays.bdays)).toBe(true);
 		})
 
 		it("it should be able to move to the last year", function() {
@@ -134,22 +134,3 @@ describe('controller: calendar', function() {
 		});
 	});
 });
-
-calendarContainDates = function(original, expected) {
-	var result = true; // It is true unless one of the expected keys is not there
-
-	index = {};
-	original.map(function (v) {
-	    index[v.highlight + '|' + v.month + '|' + v.day] = v;
-	});
-
-	// If one of the keys doesn't exist on the original, put result to false
-	expected.map(function (v) {
-	    var key = v.highlight + '|' + v.month + '|' + v.day;
-	    if (!index.hasOwnProperty(key)) {
-	        result = false;
-	    }
-	});
-
-	return result;
-}
