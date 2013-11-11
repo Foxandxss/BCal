@@ -7,7 +7,7 @@
 	<span>Friday</span></div><div class="calendar-header">
 	<span>Saturday</span></div><div class="calendar-header">
 	<span>Sunday</span></div>
-	<div ng-repeat="day in days" ng-class="{highlight: day.highlight}" class="a-day">
+	<div ng-repeat="day in days.bdays" ng-class="{highlight: day.highlight}" class="a-day">
 		<span ng-class="{'outside-month-day': day.month !== 'current'}">{{day.day}}</span>
 	</div>
 </div>

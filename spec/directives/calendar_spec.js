@@ -1,20 +1,24 @@
 describe('directive: calendar', function() {
-	var element, $rootScope, $compile;
+	var element, $rootScope, $compile, bdayscalendar;
 
 	beforeEach(module('app')); // For the template
-	beforeEach(module('directives.calendar')) // For the directive
-	beforeEach(module('services.bdayscalendar')) // For the bdayscalendar service
+	beforeEach(module('directives.calendar')); // For the directive
+	beforeEach(module('services.bdayscalendar')); // For the bdayscalendar service
 
-	beforeEach(inject(function(_$rootScope_, _$compile_, bdayscalendar) {
+	beforeEach(inject(function(_$rootScope_, _$compile_, _bdayscalendar_, $location) {
 		$rootScope = _$rootScope_;
 		$compile = _$compile_;
 
 		scope = $rootScope.$new();
 
+		spyOn($location, 'path').andReturn('/foo');
+
+		bdayscalendar = _bdayscalendar_;
+
 		bdayscalendar.setOptions({year: 2013, month: 9, day: 26}, 6, 28);
 		scope.bdays = bdayscalendar.getCalendar(2013, 9);
 
-		element = $compile('<calendar days="bdays"></calendar>')(scope);
+		element = $compile('<calendar highlight-today days="bdays"></calendar>')(scope);
 		scope.$digest();
 	}));
 
@@ -37,5 +41,5 @@ describe('directive: calendar', function() {
 			var outsideMonthSpans = element.find('#calendar span.outside-month-day');
 			expect(outsideMonthSpans.length).toBe(12);
 		});
-	})
+	});
 });
