@@ -1,10 +1,12 @@
 describe("service: utils", function() {
-	var utils;
+	var utils, moment;
 
 	beforeEach(module("services.utils"));
+	beforeEach(module("services.moment"));
 
-	beforeEach(inject(function(_utils_) {
+	beforeEach(inject(function(_utils_, _moment_) {
 		utils = _utils_;
+		moment = _moment_;
 	}));
 
 	describe("functionality", function() {

@@ -1,5 +1,5 @@
-angular.module('services.bdayscalendar', ['services.calendar', 'LocalStorageModule'])
-	.service('bdayscalendar', function(calendar, localStorageService) {
+angular.module('services.bdayscalendar', ['services.calendar', 'services.moment', 'LocalStorageModule'])
+	.service('bdayscalendar', function(calendar, moment, localStorageService) {
 		var options;
 
 		this.setOptions = function(startDay, last, cycle) {

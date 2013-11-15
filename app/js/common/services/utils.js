@@ -1,5 +1,5 @@
-angular.module('services.utils', [])
-	.service('utils', function() {
+angular.module('services.utils', ['services.moment'])
+	.service('utils', function(moment) {
 		this.fromMomentToDate = function(momDate) {
 			return new Date(momDate.year(), momDate.month(), momDate.date());
 		};

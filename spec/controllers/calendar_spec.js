@@ -1,7 +1,8 @@
 describe('controller: calendar', function() {
-	var ctrl, scope, $stateParams, $state, bdayscalendar, $controller, localStorageService;
+	var ctrl, scope, $stateParams, $state, bdayscalendar, moment, $controller, localStorageService;
 
 	beforeEach(module('ui.router'));
+	beforeEach(module('services.moment'));
 	beforeEach(module('LocalStorageModule', function($provide) {
 		var mockLocalStorageService = {
 			add: function() {},
@@ -23,10 +24,11 @@ describe('controller: calendar', function() {
 		$provide.value('$state', fakeState);
 	}));
 
-	beforeEach(inject(function(_$controller_, _$rootScope_, _$state_, _bdayscalendar_, _localStorageService_) {
+	beforeEach(inject(function(_$controller_, _$rootScope_, _$state_, _bdayscalendar_, _moment_, _localStorageService_) {
 		$controller = _$controller_;
 		$state = _$state_;
 		bdayscalendar = _bdayscalendar_; // I am not able to mock bdayscalendar (bad) becase I need to have a generated calendar (PR welcome)
+		moment = _moment_;
 		scope = _$rootScope_.$new();
 		localStorageService = _localStorageService_;
 	}));

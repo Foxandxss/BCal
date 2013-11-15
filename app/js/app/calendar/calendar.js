@@ -1,4 +1,4 @@
-angular.module('calendar', ['services.bdayscalendar', 'directives.calendar'])
+angular.module('calendar', ['services.bdayscalendar', 'services.moment', 'directives.calendar'])
 	.config(function($stateProvider) {
 		$stateProvider.state('home', {
 			url: '/calendar',
@@ -11,7 +11,7 @@ angular.module('calendar', ['services.bdayscalendar', 'directives.calendar'])
 			controller: 'CalendarCtrl'
 		});
 	})
-	.controller('CalendarCtrl', function($scope, $stateParams, $state, bdayscalendar) {
+	.controller('CalendarCtrl', function($scope, $stateParams, $state, bdayscalendar, moment) {
 		$scope.year = parseInt($stateParams.year, 10) || new Date().getFullYear();
 		$scope.month = parseInt($stateParams.month, 10) || new Date().getMonth() + 1; // Our service is not 0 based.
 

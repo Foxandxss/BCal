@@ -1,5 +1,5 @@
-angular.module('services.calendar', [])
-	.service('calendar', function() {
+angular.module('services.calendar', ['services.moment'])
+	.service('calendar', function(moment) {
 		this.getCalendar = function(year, month) {
 			var days = [], numLastDays, numCurrentMonthDays, lastMonthLastDay,
 									lastMonthFirstDay, nextMonthLastDay;

@@ -9,10 +9,10 @@ exports.config = {
   // 3. sauceUser/sauceKey - to use remote Selenium servers via SauceLabs.
 
   // The location of the selenium standalone server .jar file.
-  seleniumServerJar: '/usr/local/opt/selenium-server-standalone/selenium-server-standalone-2.33.0.jar',
+  // seleniumServerJar: '/usr/local/opt/selenium-server-standalone/selenium-server-standalone-2.33.0.jar',
   // The port to start the selenium server on, or null if the server should
   // find its own unused port.
-  seleniumPort: null,
+  // seleniumPort: null,
   // Chromedriver location is used to help the selenium standalone server
   // find chromedriver. This will be passed to the selenium jar as
   // the system property webdriver.chrome.driver. If null, selenium will
