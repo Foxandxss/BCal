@@ -77,7 +77,7 @@ describe('controller: calendar', function() {
 			var newYear, newMonth;
 			scope.nextMonth();
 
-			if (month === "12") {
+			if (month === 12) {
 				newYear = year + 1;
 				newMonth = 1;
 			} else {
