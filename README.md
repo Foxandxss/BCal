@@ -16,3 +16,5 @@ Try it here: [BCal](http://bcal.foxandxss.net)
 + Check store2 to replace LocalStorageModule
 
 Please, fill any issue or send a PR if you get something interesting (or maybe something of my TODO's list :)).
+
+The goal of this app was for educational purposes.
