@@ -176,7 +176,7 @@ angular.module('services.bdayscalendar', ['services.calendar', 'services.moment'
 		};
 
 		var decorateCalendar = function(genCalendar, bdays, requestedDate) {
-			result = {};
+			var result = {};
 
 			result['bdays'] = mergeBdays(genCalendar, bdays);
 			result['date'] = requestedDate;
@@ -186,7 +186,7 @@ angular.module('services.bdayscalendar', ['services.calendar', 'services.moment'
 
 		var mergeBdays = function(genCalendar, bdays) {
 			// Index original objects by unique key
-			index = {};
+			var index = {};
 			genCalendar.map(function (v) {
 				index['' + v.month + '|' + v.day] = v;
 			});
