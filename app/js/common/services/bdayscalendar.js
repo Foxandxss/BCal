@@ -41,7 +41,7 @@ angular.module('services.bdayscalendar', ['services.calendar', 'services.moment'
 			return decorateCalendar(genCalendar, bdays, requestedDate);
 		};
 
-		buildOptions = function(date, last, cycle) {
+		var buildOptions = function(date, last, cycle) {
 			var momentDate = moment([date.year, date.month - 1, date.day]); // 0 based
 
 			return {
@@ -51,7 +51,7 @@ angular.module('services.bdayscalendar', ['services.calendar', 'services.moment'
 			};
 		};
 
-		calculatePeriod = function(date) {
+		var calculatePeriod = function(date) {
 			var bdays = [];
 			var temporaryOptions = angular.copy(options);
 			// console.log(options);
@@ -175,7 +175,7 @@ angular.module('services.bdayscalendar', ['services.calendar', 'services.moment'
 			return bdays;
 		};
 
-		decorateCalendar = function(genCalendar, bdays, requestedDate) {
+		var decorateCalendar = function(genCalendar, bdays, requestedDate) {
 			result = {};
 
 			result['bdays'] = mergeBdays(genCalendar, bdays);
@@ -184,7 +184,7 @@ angular.module('services.bdayscalendar', ['services.calendar', 'services.moment'
 			return result;
 		};
 
-		mergeBdays = function(genCalendar, bdays) {
+		var mergeBdays = function(genCalendar, bdays) {
 			// Index original objects by unique key
 			index = {};
 			genCalendar.map(function (v) {
