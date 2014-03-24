@@ -9,14 +9,14 @@ describe("service: bdays calendar", function() {
 		localstorage = _localStorageService_;
 	}));
 
-	describe("#setOptions(startDay, last, cycle)", function() {
+	describe("#setOptions(startDay, last, cycle, startSunday)", function() {
 		it("contains the right options", function() {
 			var date = {
 				year: 2013,
 				month: 9,
 				day: 29
 			};
-			calendar.setOptions(date, 6, 28);
+			calendar.setOptions(date, 6, 28, true);
 			var options = calendar.getOptions();
 
 			expect(options.startDay.year()).toEqual(2013);
@@ -25,6 +25,7 @@ describe("service: bdays calendar", function() {
 
 			expect(options.last).toEqual(6);
 			expect(options.cycle).toEqual(28);
+      expect(options.startSunday).toBe(true);
 		});
 
 		it("throws if you put a 'last' out of range or missing", function() {
@@ -43,11 +44,16 @@ describe("service: bdays calendar", function() {
 			expect(function() { calendar.setOptions({year: 2013, day: 29}, 8, 29) }).toThrow(new Error("The 'date' is missing some data"));
 			expect(function() { calendar.setOptions({month: 9, day: 29}, 8, 29) }).toThrow(new Error("The 'date' is missing some data"));
 		});
+    it("it puts 'startSunday' as false if it not set", function() {
+      calendar.setOptions({year: 2013, month: 9, day: 29}, 1, 28 );
+      var options = calendar.getOptions();
+      expect(options.startSunday).toBe(false);
+    });
 		it("should save the options in the localstorage if available", function() {
 			if(localstorage.isSupported()) { // We avoid the test to fail if there is no local storage in the testing browser
 				spyOn(localstorage, 'add');
 				calendar.setOptions({year: 2013, month: 9, day: 29}, 6, 28);
-				expect(localstorage.add).toHaveBeenCalledWith('bdaysoptions', angular.toJson({date: {year: 2013, month: 9, day: 29}, last: 6, cycle: 28}));
+				expect(localstorage.add).toHaveBeenCalledWith('bdaysoptions', angular.toJson({date: {year: 2013, month: 9, day: 29}, last: 6, cycle: 28, startSunday: false}));
 			};
 		});
 	});
@@ -70,6 +76,7 @@ describe("service: bdays calendar", function() {
 
 				expect(options.last).toEqual(6);
 				expect(options.cycle).toEqual(28);
+        expect(options.startSunday).toBe(false);
 			}
 		});
 	});
@@ -86,9 +93,9 @@ describe("service: bdays calendar", function() {
 			var expectedResult = [{highlight: true, month: "prev", day: 29 },{highlight: true, month: "prev",	day: 30},{highlight: true, month: "prev", day: 31},{highlight: true,month: "current",	day: 1},{ highlight: true, month: "current", day: 2},{ highlight: true,	month: "current",	day: 3},{	highlight: true, month: "current", day: 26},{	highlight: true, month: "current", day: 27},{highlight: true,	month: "current",	day: 28},{highlight: true,month: "current",	day: 29},{highlight: true,month: "current",	day: 30},{highlight: true,month: "next",day: 1}];
 
 			expect(generatedCalendar.bdays.length).toBe(42);
-			var generatedHightlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
-			expect(generatedHightlight).toBe(expectedResult.length);
-			expect(generatedHightlight).toBe(12);
+			var generatedHighlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
+			expect(generatedHighlight).toBe(expectedResult.length);
+			expect(generatedHighlight).toBe(12);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 
@@ -103,9 +110,9 @@ describe("service: bdays calendar", function() {
 			var expectedResult = [{highlight: true, month: "prev", day: 31 },{highlight: true, month: "current",	day: 1},{highlight: true, month: "current", day: 2},{highlight: true,month: "current",	day: 3},{ highlight: true, month: "current", day: 4},{ highlight: true,	month: "current",	day: 5},{	highlight: true, month: "current", day: 28},{	highlight: true, month: "current", day: 29},{highlight: true,	month: "next",	day: 1},{highlight: true,month: "next",	day: 2},{highlight: true,month: "next",	day: 3},{highlight: true,month: "next",day: 4}];
 			
 			expect(generatedCalendar.bdays.length).toBe(42);
-			var generatedHightlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
-			expect(generatedHightlight).toBe(expectedResult.length);
-			expect(generatedHightlight).toBe(12);
+			var generatedHighlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
+			expect(generatedHighlight).toBe(expectedResult.length);
+			expect(generatedHighlight).toBe(12);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 
@@ -120,9 +127,9 @@ describe("service: bdays calendar", function() {
 			var expectedResult = [{highlight: true, month: "current", day: 19 },{highlight: true, month: "current",	day: 20},{highlight: true, month: "current", day: 21},{highlight: true,month: "current",	day: 22},{ highlight: true, month: "current", day: 23},{ highlight: true,	month: "current",	day: 24}];
 			
 			expect(generatedCalendar.bdays.length).toBe(42);
-			var generatedHightlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
-			expect(generatedHightlight).toBe(expectedResult.length);
-			expect(generatedHightlight).toBe(6);
+			var generatedHighlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
+			expect(generatedHighlight).toBe(expectedResult.length);
+			expect(generatedHighlight).toBe(6);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 
@@ -137,9 +144,9 @@ describe("service: bdays calendar", function() {
 			var expectedResult = [{highlight: true, month: "current", day: 6 },{highlight: true, month: "current",	day: 7},{highlight: true, month: "current", day: 8},{highlight: true,month: "current",	day: 9},{ highlight: true, month: "current", day: 10},{ highlight: true,	month: "current",	day: 11},{	highlight: true, month: "next", day: 4},{	highlight: true, month: "next", day: 5},{highlight: true,	month: "next",	day: 6},{highlight: true,month: "next",	day: 7}];
 
 			expect(generatedCalendar.bdays.length).toBe(42);
-			var generatedHightlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
-			expect(generatedHightlight).toBe(expectedResult.length);
-			expect(generatedHightlight).toBe(10);
+			var generatedHighlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
+			expect(generatedHighlight).toBe(expectedResult.length);
+			expect(generatedHighlight).toBe(10);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 
@@ -154,9 +161,9 @@ describe("service: bdays calendar", function() {
 			var expectedResult = [{highlight: true, month: "current", day: 1 },{highlight: true, month: "current",	day: 21}];
 
 			expect(generatedCalendar.bdays.length).toBe(42);
-			var generatedHightlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
-			expect(generatedHightlight).toBe(expectedResult.length);
-			expect(generatedHightlight).toBe(2);
+			var generatedHighlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
+			expect(generatedHighlight).toBe(expectedResult.length);
+			expect(generatedHighlight).toBe(2);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 
@@ -171,9 +178,9 @@ describe("service: bdays calendar", function() {
 			var expectedResult = [{highlight: true, month: "current", day: 1 }, {highlight: true, month: 'next', day: 2}];
 
 			expect(generatedCalendar.bdays.length).toBe(42);
-			var generatedHightlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
-			expect(generatedHightlight).toBe(expectedResult.length);
-			expect(generatedHightlight).toBe(2);
+			var generatedHighlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
+			expect(generatedHighlight).toBe(expectedResult.length);
+			expect(generatedHighlight).toBe(2);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 
@@ -188,9 +195,9 @@ describe("service: bdays calendar", function() {
 			var expectedResult = [{highlight: true, month: "current", day: 1 },{highlight: true, month: "current",	day: 2},{highlight: true, month: "current", day: 3},{highlight: true,month: "current",	day: 4},{ highlight: true, month: "current", day: 5},{ highlight: true,	month: "current",	day: 6},{	highlight: true, month: "current", day: 7},{	highlight: true, month: "current", day: 8},{highlight: true,	month: "current",	day: 9}, {highlight: true, month: 'next', day: 2}, {highlight: true, month: 'next', day: 3}, {highlight: true, month: 'next', day: 4}, {highlight: true, month: 'next', day: 5}, {highlight: true, month: 'next', day: 6}];
 
 			expect(generatedCalendar.bdays.length).toBe(42);
-			var generatedHightlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
-			expect(generatedHightlight).toBe(expectedResult.length);
-			expect(generatedHightlight).toBe(14);
+			var generatedHighlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
+			expect(generatedHighlight).toBe(expectedResult.length);
+			expect(generatedHighlight).toBe(14);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 
@@ -205,9 +212,9 @@ describe("service: bdays calendar", function() {
 			var expectedResult = [{highlight: true, month: "prev", day: 26 },{highlight: true, month: "prev",	day: 27},{highlight: true, month: "prev", day: 28},{highlight: true,month: "prev",	day: 29},{ highlight: true, month: "prev", day: 30},{ highlight: true,	month: "prev",	day: 31},{	highlight: true, month: "current", day: 1},{	highlight: true, month: "current", day: 2},{highlight: true,	month: "current",	day: 3}, {highlight: true, month: 'current', day: 15}, {highlight: true, month: 'current', day: 16}, {highlight: true, month: 'current', day: 17}, {highlight: true, month: 'current', day: 18}, {highlight: true, month: 'current', day: 19}, {highlight: true, month: 'current', day: 20}, {highlight: true, month: 'current', day: 21}, {highlight: true, month: 'current', day: 22}, {highlight: true, month: 'current', day: 23}, {highlight: true, month: 'next', day: 5}, {highlight: true, month: 'next', day: 6}];
 
 			expect(generatedCalendar.bdays.length).toBe(42);
-			var generatedHightlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
-			expect(generatedHightlight).toBe(expectedResult.length);
-			expect(generatedHightlight).toBe(20);
+			var generatedHighlight = _.filter(generatedCalendar.bdays, function(item) { return item.highlight; }).length;
+			expect(generatedHighlight).toBe(expectedResult.length);
+			expect(generatedHighlight).toBe(20);
 			expect(calendarContainDates(generatedCalendar, expectedResult)).toBe(true);
 		});
 

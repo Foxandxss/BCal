@@ -1,21 +1,14 @@
 angular.module('services.calendar', ['services.moment'])
 	.service('calendar', function(moment) {
-		this.getCalendar = function(year, month) {
+		this.getCalendar = function(year, month, startsOnSunday) {
 			var days = [], numLastDays, numCurrentMonthDays, lastMonthLastDay,
 									lastMonthFirstDay, nextMonthLastDay;
 
 			var date = moment([year, month - 1, 1]);
-			// We need to find out how many days we need to fill from the last month
-			switch(date.day()) {
-				case 0: // AKA Sunday, so we need 6 days from the last month
-					numLastDays = 6;
-					break;
-				case 1: // AKA Monday, so we need 7 days from the last month
-					numLastDays = 7;
-					break;
-				default: // If not Monday nor Sunday
-					numLastDays = date.day() - 1;
-			}
+      var startingDay = startsOnSunday ? 0 : 1;
+      var difference = startingDay - date.day();
+
+      numLastDays = (difference > 0) ? 7 - difference : - difference;
 
 			numCurrentMonthDays = date.daysInMonth(); // How many days we have in this month
 			lastMonthLastDay = date.subtract('months', 1).daysInMonth(); // Last day to show in the calendar

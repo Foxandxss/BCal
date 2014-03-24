@@ -41,5 +41,19 @@ describe('directive: calendar', function() {
 			var outsideMonthSpans = element.find('#calendar span.outside-month-day');
 			expect(outsideMonthSpans.length).toBe(12);
 		});
+    it('contains Monday as the first day of the week by default', function() {
+      var headers = element.find('.calendar-header');
+      var firstHeaderText = headers[0].innerText;
+      expect(firstHeaderText).toContain('Monday');
+    });
+    it('contains Sunday as the first day of the week if `start-sunday` is true', function() {
+      scope.startSunday = true;
+      element = $compile('<calendar days="bdays" start-sunday="startSunday"></calendar>')(scope);
+      scope.$digest();
+
+      var headers = element.find('.calendar-header');
+      var firstHeaderText = headers[0].innerText;
+      expect(firstHeaderText).toContain('Sunday');
+    });
 	});
 });

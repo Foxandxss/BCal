@@ -16,6 +16,7 @@ angular.module('calendar', ['services.bdayscalendar', 'services.moment', 'direct
 		$scope.month = parseInt($stateParams.month, 10) || new Date().getMonth() + 1; // Our service is not 0 based.
 
 		$scope.bdays = bdayscalendar.getCalendar($scope.year, $scope.month);
+    $scope.options = bdayscalendar.getOptions();
 
 		$scope.header = moment([$scope.year, $scope.month - 1, 1]).format('MMMM, YYYY'); // We use moment to get the header, it is 0 based
 		

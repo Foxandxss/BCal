@@ -9,6 +9,10 @@ angular.module('directives.calendar', ['services.moment', 'services.utils'])
 			link: function(scope, element, attrs) {
 				var today = moment();
 				var requested = scope.days.date;
+        var startingDaySunday = angular.isDefined(attrs.startSunday) ? scope.$parent.$eval(attrs.startSunday) : false;
+
+        scope.labels = [];
+
 				if (angular.isDefined(attrs.showToday)) {
 					if (utils.isTodayInRange(today, requested)) {
 						var result = utils.compareDateMonth(today.month(), requested.month());
@@ -35,6 +39,11 @@ angular.module('directives.calendar', ['services.moment', 'services.utils'])
 						}
 					}
 				}
+        if (startingDaySunday) {
+          scope.labels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        } else {
+          scope.labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        }
 			}
 		};
 	});

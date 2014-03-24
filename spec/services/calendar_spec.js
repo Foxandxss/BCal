@@ -22,7 +22,15 @@ describe("service: calendar", function() {
 			expect(generatedCalendar.length).toBe(42);
 			expect(_.first(generatedCalendar).day).toBe(30);
 			expect(_.last(generatedCalendar).day).toBe(11);
-		})
+		});
+
+    it('should generate a calendar where the first day is sunday', function() {
+      var year = 2014, month = 3;
+      var generatedCalendar = calendar.getCalendar(year, month, true);
+      expect(generatedCalendar.length).toBe(42);
+      expect(_.first(generatedCalendar).day).toBe(23);
+      expect(_.last(generatedCalendar).day).toBe(5);
+    });
 	});
 
 });

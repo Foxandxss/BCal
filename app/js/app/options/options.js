@@ -18,7 +18,8 @@ angular.module('options', ['ui.date', 'services.bdayscalendar', 'services.utils'
 			$scope.options = {
 				startDay: new Date(),
 				last: 1,
-				cycle: 20
+				cycle: 20,
+        startSunday: false
 			};
 			$scope.canCancel = false;
 		} else {
@@ -26,7 +27,8 @@ angular.module('options', ['ui.date', 'services.bdayscalendar', 'services.utils'
 			$scope.options = {
 				startDay: utils.fromMomentToDate(options.startDay),
 				last: options.last,
-				cycle: options.cycle
+				cycle: options.cycle,
+        startSunday: options.startSunday
 			};
 			$scope.canCancel = true;
 		}
@@ -37,7 +39,7 @@ angular.module('options', ['ui.date', 'services.bdayscalendar', 'services.utils'
 				var month = $scope.options.startDay.getMonth() + 1; // bdayscalendar is not 0 based
 				var day = $scope.options.startDay.getDate();
 
-				bdayscalendar.setOptions({year: year, month: month, day: day }, $scope.options.last , $scope.options.cycle);
+				bdayscalendar.setOptions({year: year, month: month, day: day }, $scope.options.last , $scope.options.cycle, $scope.options.startSunday);
 				$state.go('home');
 			}
 		};

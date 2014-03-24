@@ -2,7 +2,7 @@ angular.module('services.bdayscalendar', ['services.calendar', 'services.moment'
 	.service('bdayscalendar', function(calendar, moment, localStorageService) {
 		var options;
 
-		this.setOptions = function(startDay, last, cycle) {
+		this.setOptions = function(startDay, last, cycle, startSunday) {
 			if(!startDay.year || !startDay.month || !startDay.day) {
 				throw new Error("The 'date' is missing some data");
 			}
@@ -14,10 +14,10 @@ angular.module('services.bdayscalendar', ['services.calendar', 'services.moment'
 
 			// if we have local storage support, save the data
 			if(localStorageService.isSupported()) {
-				localStorageService.add('bdaysoptions', angular.toJson({date: startDay, last: last, cycle: cycle}));
+				localStorageService.add('bdaysoptions', angular.toJson({date: startDay, last: last, cycle: cycle, startSunday: !!startSunday}));
 			}
 
-			options = buildOptions(startDay, last, cycle);
+			options = buildOptions(startDay, last, cycle, !!startSunday);
 		};
 
 		this.getOptions = function() {
@@ -26,7 +26,7 @@ angular.module('services.bdayscalendar', ['services.calendar', 'services.moment'
 			} else {
 				var storedOptions = angular.fromJson(localStorageService.get('bdaysoptions'));
 				if (storedOptions) { // We have saved options?
-					options = buildOptions(storedOptions.date, storedOptions.last, storedOptions.cycle);
+					options = buildOptions(storedOptions.date, storedOptions.last, storedOptions.cycle, storedOptions.startSunday || false);
 					return options;	
 				} else { // We don't
 					return undefined;
@@ -35,29 +35,29 @@ angular.module('services.bdayscalendar', ['services.calendar', 'services.moment'
 		};
 
 		this.getCalendar = function(year, month) {
+      if(!options) {
+        throw new Error("You need to set the options first");
+      }
 			var requestedDate = moment([year, month - 1, 1]);
-			var genCalendar = calendar.getCalendar(year, month);
+			var genCalendar = calendar.getCalendar(year, month, options.startSunday);
 			var bdays = calculatePeriod(requestedDate);
 			return decorateCalendar(genCalendar, bdays, requestedDate);
 		};
 
-		var buildOptions = function(date, last, cycle) {
+		var buildOptions = function(date, last, cycle, startSunday) {
 			var momentDate = moment([date.year, date.month - 1, date.day]); // 0 based
 
 			return {
 				startDay: momentDate,
 				last: last,
-				cycle: cycle
+				cycle: cycle,
+        startSunday: startSunday
 			};
 		};
 
 		var calculatePeriod = function(date) {
 			var bdays = [];
 			var temporaryOptions = angular.copy(options);
-			// console.log(options);
-			if(!options) {
-				throw new Error("You need to set the options first");
-			}
 			while (true) {
 				// Check if we are on the date provided in the options, if not, we need to go there
 				if ((temporaryOptions.startDay.month() !== date.month()) || (temporaryOptions.startDay.year() !== date.year())) {

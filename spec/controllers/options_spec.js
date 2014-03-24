@@ -6,15 +6,15 @@ describe('controller: options', function() {
 
 		var fakeUtils = {
 			fromMomentToDate: function() {}
-		}
+		};
 
 		var fakeState = {
 			go: function() {}
-		}
+		};
 
 		var fakeBdays = {
 			setOptions: function(startDay, last, cycle) {}
-		}
+		};
 
 		spyOn(fakeUtils, 'fromMomentToDate').andReturn(new Date());
 		spyOn(fakeState, 'go');
@@ -41,32 +41,34 @@ describe('controller: options', function() {
 		});
 
 		it("contains some defaults", function() {
-			expect(scope.options.startDay.getFullYear()).toBe(new Date().getFullYear())
-			expect(scope.options.startDay.getMonth()).toBe(new Date().getMonth())
-			expect(scope.options.startDay.getDate()).toBe(new Date().getDate())
+			expect(scope.options.startDay.getFullYear()).toBe(new Date().getFullYear());
+			expect(scope.options.startDay.getMonth()).toBe(new Date().getMonth());
+			expect(scope.options.startDay.getDate()).toBe(new Date().getDate());
 			expect(scope.options.last).toBe(1);
 			expect(scope.options.cycle).toBe(20);
+      expect(scope.options.startSunday).toBe(false);
 		});
 
-		it("shouldn't cointain the cancel button", function() {
+		it("shouldn't contain the cancel button", function() {
 			expect(scope.canCancel).toBe(false)
 		});
 	});
 
 	describe("with options", function() {
 		beforeEach(function() {
-			ctrl = $controller('OptionsCtrl', {$scope: scope, $state: $state, utils: utils, options: {startDay: moment(), last: 6, cycle: 28}});			
+			ctrl = $controller('OptionsCtrl', {$scope: scope, $state: $state, utils: utils, options: {startDay: moment(), last: 6, cycle: 28, startSunday: false}});
 		});
 
 		it("contains the provided options", function() {
-			expect(scope.options.startDay.getFullYear()).toBe(new Date().getFullYear())
-			expect(scope.options.startDay.getMonth()).toBe(new Date().getMonth())
-			expect(scope.options.startDay.getDate()).toBe(new Date().getDate())
+			expect(scope.options.startDay.getFullYear()).toBe(new Date().getFullYear());
+			expect(scope.options.startDay.getMonth()).toBe(new Date().getMonth());
+			expect(scope.options.startDay.getDate()).toBe(new Date().getDate());
 			expect(scope.options.last).toBe(6);
 			expect(scope.options.cycle).toBe(28);
+      expect(scope.options.startSunday).toBe(false);
 		});
 
-		it("should cointain the cancel button", function() {
+		it("should contain the cancel button", function() {
 			expect(scope.canCancel).toBe(true)
 		});
 
@@ -84,10 +86,10 @@ describe('controller: options', function() {
 		it("should call bdayscalendar with the right options and redirect", function() {
 			scope.optionsForm = {
 				$valid: true // We mock the form validity.
-			}
+			};
 
 			scope.submitOptions();
-			expect(bdayscalendar.setOptions).toHaveBeenCalledWith({year: scope.options.startDay.getFullYear(), month: scope.options.startDay.getMonth() + 1, day: scope.options.startDay.getDate()}, scope.options.last, scope.options.cycle);
+			expect(bdayscalendar.setOptions).toHaveBeenCalledWith({year: scope.options.startDay.getFullYear(), month: scope.options.startDay.getMonth() + 1, day: scope.options.startDay.getDate()}, scope.options.last, scope.options.cycle, scope.options.startSunday);
 			expect($state.go).toHaveBeenCalledWith('home');
 		});
 	});

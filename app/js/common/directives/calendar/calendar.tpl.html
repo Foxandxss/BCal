@@ -1,12 +1,7 @@
 <div id="calendar">
-	<!-- ugly html for awesome css -->
-	<div class="calendar-header"><span>Monday</span></div><div class="calendar-header">
-	<span>Tuesday</span></div><div class="calendar-header">
-	<span>Wednesday</span></div><div class="calendar-header">
-	<span>Thursday</span></div><div class="calendar-header">
-	<span>Friday</span></div><div class="calendar-header">
-	<span>Saturday</span></div><div class="calendar-header">
-	<span>Sunday</span></div>
+	<div ng-repeat="label in labels" class="calendar-header">
+    <span>{{label}}</span>
+  </div>
 	<div ng-repeat="day in days.bdays" ng-class="{highlight: day.highlight, 'current-day-div': day.currentDayDiv}" class="a-day">
 		<span ng-class="{'outside-month-day': day.month !== 'current', 'current-day-text': day.currentDayText}">{{day.day}}</span>
 	</div>
