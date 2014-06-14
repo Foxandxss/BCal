@@ -1,7 +1,7 @@
 <div id="calendar">
 	<div ng-repeat="label in labels" class="calendar-header">
-    <span>{{label}}</span>
-  </div>
+		<span>{{label}}</span>
+	</div>
 	<div ng-repeat="day in days.bdays" ng-class="{highlight: day.highlight, 'current-day-div': day.currentDayDiv}" class="a-day">
 		<span ng-class="{'outside-month-day': day.month !== 'current', 'current-day-text': day.currentDayText}">{{day.day}}</span>
 	</div>

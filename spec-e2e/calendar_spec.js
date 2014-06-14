@@ -1,35 +1,35 @@
 var moment = require('./helpers/moment');
 
 describe("calendar page", function() {
-	var ptor;
+  var ptor;
 
-	var storageMock = function() {
-		var module = angular.module('LocalStorageModule', []);
-		var fakeStorage = {
-			get: function() {
-				return angular.toJson({date: {year: 2013, month: 9, day: 29}, last: 6, cycle: 28});
+  var storageMock = function() {
+    var module = angular.module('LocalStorageModule', []);
+    var fakeStorage = {
+      get: function() {
+        return angular.toJson({date: {year: 2013, month: 9, day: 29}, last: 6, cycle: 28});
       },
       set: function() {}
-		};
+    };
 
-		module.value('localStorageService', fakeStorage);
-	};
+    module.value('localStorageService', fakeStorage);
+  };
 
-	beforeEach(function() {
-		ptor = protractor.getInstance();
-		ptor.addMockModule('LocalStorageModule', storageMock);
-		browser.get('/calendar');
-	});
+  beforeEach(function() {
+    ptor = protractor.getInstance();
+    ptor.addMockModule('LocalStorageModule', storageMock);
+    browser.get('/calendar');
+  });
 
-	afterEach(function() {
-  	ptor.clearMockModules();
-	});
+  afterEach(function() {
+    ptor.clearMockModules();
+  });
 
-	it('should be on the actual month', function() {
-		var expectedHeader = moment().format('MMMM, YYYY');
-		var header = element(by.binding('{{header}}')).getText();
+  it('should be on the actual month', function() {
+    var expectedHeader = moment().format('MMMM, YYYY');
+    var header = element(by.binding('{{header}}')).getText();
     expect(header).toBe(expectedHeader);
-	});
+  });
 
   it('can go to the next month', function() {
     var expectedHeader = moment().add('months', 1).format('MMMM, YYYY');
