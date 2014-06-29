@@ -1,5 +1,7 @@
 # BCal - Menstruation Calendar
 
+[![Code Climate](https://codeclimate.com/github/Foxandxss/BCal.png)](https://codeclimate.com/github/Foxandxss/BCal)
+
 BCal is an menstruation calendar made with Angular.JS
 
 BCal is a backend-less application which uses LocalStorage to store our configuration.
